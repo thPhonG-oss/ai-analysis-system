@@ -1,13 +1,13 @@
-package com.ktpm.discovery_service;
+package com.ktpm.discover_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DiscoveryServiceApplication {
+public class DiscoverServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DiscoveryServiceApplication.class, args);
+		SpringApplication.run(DiscoverServiceApplication.class, args);
 	}
 
 }

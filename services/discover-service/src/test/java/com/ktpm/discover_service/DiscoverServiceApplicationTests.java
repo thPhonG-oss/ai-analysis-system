@@ -1,10 +1,10 @@
-package com.ktpm.discovery_service;
+package com.ktpm.discover_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DiscoveryServiceApplicationTests {
+class DiscoverServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
