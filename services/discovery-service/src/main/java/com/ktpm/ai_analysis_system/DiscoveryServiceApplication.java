@@ -1,4 +1,4 @@
-package com.ktmp.ai_analysis_system;
+package com.ktpm.ai_analysis_system;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
