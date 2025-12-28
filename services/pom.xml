@@ -5,7 +5,6 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Thông tin project tổng thể -->
     <groupId>com.ktpm</groupId>
     <artifactId>ai-analysis-system</artifactId>
     <version>1.0.0</version>
@@ -16,12 +15,13 @@
 
     <!-- Khai báo các module con -->
     <modules>
-        <module>discovery-service</module>
+        <module>discover-service</module>
         <module>api-gateway</module>
-        <module>auth-service</module>
-        <module>news-crawler-service</module>
-        <module>price-service</module>
-        <module>ai-analysis-service</module>
+        <!-- Các module khác sẽ được thêm sau -->
+        <!-- <module>auth-service</module> -->
+        <!-- <module>news-crawler-service</module> -->
+        <!-- <module>price-service</module> -->
+        <!-- <module>ai-analysis-service</module> -->
     </modules>
 
     <!-- Parent của Spring Boot -->
@@ -32,18 +32,15 @@
         <relativePath/>
     </parent>
 
-    <!-- Định nghĩa version các thư viện dùng chung -->
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2023.0.0</spring-cloud.version>
         <projectlombok-lombok.version>1.18.30</projectlombok-lombok.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
-		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <micrometer-tracing.version>1.2.0</micrometer-tracing.version>
-    
     </properties>
 
-    <!-- Dependency Management: Quản lý version tập trung -->
     <dependencyManagement>
         <dependencies>
             <!-- Spring Cloud Dependencies -->
@@ -80,14 +77,14 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- Dependencies dùng chung cho TẤT CẢ modules -->
     <dependencies>
+        <!-- Lombok -->
         <dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>${projectlombok-lombok.version}</version>
-			<scope>provided</scope>
-		</dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${projectlombok-lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Spring Boot Test -->
         <dependency>
@@ -96,12 +93,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Swagger OpenAPI -->
         <dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-        <!-- Micrometer Tracing - Thêm vào đây để tất cả modules đều có -->
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+
+        <!-- Micrometer Tracing -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-tracing-bridge-brave</artifactId>
@@ -116,7 +115,6 @@
 
     <build>
         <plugins>
-            <!-- Plugin để build Spring Boot applications -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

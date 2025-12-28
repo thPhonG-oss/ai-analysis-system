@@ -1,3 +1,133 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: api-gateway
+  
+  # Redis configuration for rate limiting
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      
+  # Spring Cloud Gateway Configuration
+  cloud:
+    gateway:
+      # Global CORS configuration
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: 
+              - "http://localhost:3000"
+              - "http://localhost:5173"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+      
+      # Route definitions
+      routes:
+        # Auth Service Routes
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=2  # Remove /api/auth
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+        
+        # News Crawler Service Routes
+        - id: news-crawler-service
+          uri: lb://news-crawler-service
+          predicates:
+            - Path=/api/news/**
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.burstCapacity: 10
+        
+        # Price Service Routes (HTTP)
+        - id: price-service
+          uri: lb://price-service
+          predicates:
+            - Path=/api/price/**
+          filters:
+            - StripPrefix=2
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 40
+        
+        # Price Service WebSocket Routes
+        - id: price-websocket
+          uri: lb:ws://price-service
+          predicates:
+            - Path=/ws/price/**
+          filters:
+            - StripPrefix=2
+        
+        # AI Analysis Service Routes (VIP only)
+        - id: ai-analysis-service
+          uri: lb://ai-analysis-service
+          predicates:
+            - Path=/api/analysis/**
+          filters:
+            - StripPrefix=2
+            - AuthenticationFilter
+            - VIPFilter
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 3
+                redis-rate-limiter.burstCapacity: 5
+      
+      # Default filters for all routes
+      default-filters:
+        - AddRequestHeader=X-Gateway-Request, ApiGateway
+        - AddResponseHeader=X-Gateway-Response, ApiGateway
+
+# Eureka Client Configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+# JWT Configuration
+jwt:
+  secret: your-256-bit-secret-key-change-this-in-production
+  expiration: 86400000  # 24 hours in milliseconds
+
+# Management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,gateway
+  endpoint:
+    health:
+      show-details: always
+    gateway:
+      enabled: true
+
+# Logging
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: DEBUG
+    com.ktpm.api_gateway: DEBUG

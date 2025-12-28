@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: discovery-service
+server:
+  port: 8761
+
+spring:
+  application:
+    name: discovery-service
+
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    # Không đăng ký chính nó vào Eureka
+    register-with-eureka: false
+    # Không fetch registry từ Eureka khác
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    # Tắt self-preservation mode trong môi trường dev
+    enable-self-preservation: false
+    # Thời gian eviction (xóa service không hoạt động) - 60s
+    eviction-interval-timer-in-ms: 60000
+
+# Management endpoints cho monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.netflix.eureka: DEBUG
+    com.netflix.discovery: DEBUG
