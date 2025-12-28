@@ -1,4 +1,4 @@
-package com.ktpm.ai_analysis_system;
+package com.ktpm.discovery_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
