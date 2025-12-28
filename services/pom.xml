@@ -15,7 +15,7 @@
 
     <!-- Khai báo các module con -->
     <modules>
-        <module>discover-service</module>
+        <module>discovery-service</module>
         <module>api-gateway</module>
         <!-- Các module khác sẽ được thêm sau -->
         <!-- <module>auth-service</module> -->

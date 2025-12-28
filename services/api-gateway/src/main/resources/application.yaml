@@ -52,7 +52,7 @@ spring:
             - Path=/api/news/**
           filters:
             - StripPrefix=2
-            - AuthenticationFilter
+            - Authentication  # Changed: removed "Filter" suffix
             - name: RequestRateLimiter
               args:
                 redis-rate-limiter.replenishRate: 5
@@ -85,8 +85,8 @@ spring:
             - Path=/api/analysis/**
           filters:
             - StripPrefix=2
-            - AuthenticationFilter
-            - VIPFilter
+            - Authentication  # Changed: removed "Filter" suffix
+            - VIP  # Changed: removed "Filter" suffix
             - name: RequestRateLimiter
               args:
                 redis-rate-limiter.replenishRate: 3
